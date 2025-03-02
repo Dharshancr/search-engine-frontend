@@ -1,31 +1,40 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const Trending = () => {
-    const [trending, setTrending] = useState([]);
+import axios from "axios";
 
-    useEffect(() => {
-        const fetchTrending = async () => {
-            try {
-                const response = await axios.get("https://search-engine-backend.onrender.com");
-                setTrending(response.data);
-            } catch (error) {
-                console.error("Error fetching trending searches", error);
-            }
-        };
-        fetchTrending();
-    }, []);
+const API_BASE_URL = "https://search-engine-backend.onrender.com";
 
-    return (
-        <div className="mt-6">
-            <h2 className="text-lg font-semibold">Trending Searches</h2>
-            <ul>
-                {trending.map((item, index) => (
-                    <li key={index} className="text-blue-500">{item._id} ({item.count})</li>
-                ))}
-            </ul>
-        </div>
-    );
+export const signup = async (name, email, password) => {
+    try {
+        const response = await axios.post(`${API_BASE_URL}/signup`, { name, email, password });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
 };
 
-export default Trending;
+export const login = async (email, password) => {
+    try {
+        const response = await axios.post(`${API_BASE_URL}/login`, { email, password });
+        localStorage.setItem("token", response.data.token);
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
+export const saveSearchHistory = async (query) => {
+    try {
+        const token = localStorage.getItem("token");
+        const response = await axios.post(`${API_BASE_URL}/history`, { query }, {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        return response.data;
+    } catch (error) {
+        return error.response.data;
+    }
+};
+
+export const isAuthenticated = () => !!localStorage.getItem("token");
+export const logout = () => localStorage.removeItem("token");
