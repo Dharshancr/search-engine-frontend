@@ -14,7 +14,7 @@ const Results = () => {
         const fetchResults = async () => {
             setLoading(true);
             try {
-                const response = await axios.get(`http://localhost:5000/search?q=${query}&page=${page}`);
+                const response = await axios.get(`search-engine-frontend-bhvonba0g.vercel.app`);
                 setResults(response.data.organic_results || []);
             } catch (error) {
                 console.error("Error fetching search results", error);

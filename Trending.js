@@ -7,7 +7,7 @@ const Trending = () => {
     useEffect(() => {
         const fetchTrending = async () => {
             try {
-                const response = await axios.get("http://localhost:5000/trending");
+                const response = await axios.get("https://search-engine-backend.onrender.com");
                 setTrending(response.data);
             } catch (error) {
                 console.error("Error fetching trending searches", error);
